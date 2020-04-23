@@ -27,9 +27,9 @@ std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
   size_t num_time_steps = probs_seq.size();
   for (size_t i = 0; i < num_time_steps; ++i) {
     VALID_CHECK_EQ(probs_seq[i].size(),
-                   vocabulary.size(),
-                   "The shape of probs_seq does not match with "
-                   "the shape of the vocabulary");
+                  vocabulary.size(),
+                  "The shape of probs_seq does not match with "
+                  "the shape of the vocabulary");
   }
 
   // assign blank id
@@ -69,7 +69,7 @@ std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
           prefixes.begin(), prefixes.begin() + num_prefixes, prefix_compare);
       float blank_prob = log_input ? prob[blank_id] : std::log(prob[blank_id]);
       min_cutoff = prefixes[num_prefixes - 1]->score +
-                   blank_prob - std::max(0.0, ext_scorer->beta);
+                  blank_prob - std::max(0.0, ext_scorer->beta);
       full_beam = (num_prefixes == beam_size);
     }
 
@@ -108,8 +108,7 @@ std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
           } else if (c != prefix->character) {
             log_p = log_prob_c + prefix->score;
           }
-
-          // language model scoring
+                    // language model scoring
           if (ext_scorer != nullptr &&
               (c == space_id || ext_scorer->is_character_based())) {
             PathTrie *prefix_to_score = nullptr;
@@ -127,7 +126,7 @@ std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
             log_p += score;
             log_p += ext_scorer->beta;
           }
-          prefix_new->log_prob_nb_cur =
+                    prefix_new->log_prob_nb_cur =
               log_sum_exp(prefix_new->log_prob_nb_cur, log_p);
         }
       }  // end of loop over prefix

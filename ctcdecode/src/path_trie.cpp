@@ -40,8 +40,8 @@ PathTrie* PathTrie::get_path_trie(int new_char, int new_timestep, float cur_log_
   for (child = children_.begin(); child != children_.end(); ++child) {
     if (child->first == new_char) {
       if (child->second->log_prob_c < cur_log_prob_c) {
-	child->second->log_prob_c = cur_log_prob_c;
-	child->second->timestep = new_timestep;
+        child->second->log_prob_c = cur_log_prob_c;
+        child->second->timestep = new_timestep;
       }
       break;
     }
@@ -76,7 +76,7 @@ PathTrie* PathTrie::get_path_trie(int new_char, int new_timestep, float cur_log_
         new_path->dictionary_ = dictionary_;
         new_path->has_dictionary_ = true;
         new_path->matcher_ = matcher_;
-	new_path->log_prob_c = cur_log_prob_c;
+        new_path->log_prob_c = cur_log_prob_c;
 
         // set spell checker state
         // check to see if next state is final

@@ -127,7 +127,8 @@ void Scorer::reset_params(float alpha, float beta) {
 std::string Scorer::vec2str(const std::vector<int>& input) {
   std::string word;
   for (auto ind : input) {
-    word += char_list_[ind];
+    if(ind == SPACE_ID_) word += "#";
+    else word += char_list_[ind];
   }
   return word;
 }
@@ -164,7 +165,6 @@ std::vector<std::string> Scorer::make_ngram(PathTrie* prefix) {
   std::vector<std::string> ngram;
   PathTrie* current_node = prefix;
   PathTrie* new_node = nullptr;
-
   for (int order = 0; order < max_order_; order++) {
     std::vector<int> prefix_vec;
     std::vector<int> prefix_steps;
@@ -189,6 +189,7 @@ std::vector<std::string> Scorer::make_ngram(PathTrie* prefix) {
       break;
     }
   }
+  
   std::reverse(ngram.begin(), ngram.end());
   return ngram;
 }
