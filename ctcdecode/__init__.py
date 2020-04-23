@@ -1,5 +1,5 @@
-from ._ext import ctc_decode
 import torch
+from ._ext import ctc_decode
 
 
 class CTCBeamDecoder(object):
@@ -9,7 +9,7 @@ class CTCBeamDecoder(object):
         self._beam_width = beam_width
         self._scorer = None
         self._num_processes = num_processes
-        self._labels = ''.join(labels).encode()
+        self._labels = labels
         self._num_labels = len(labels)
         self._blank_id = blank_id
         self._log_probs = 1 if log_probs_input else 0
@@ -29,13 +29,14 @@ class CTCBeamDecoder(object):
         output = torch.IntTensor(batch_size, self._beam_width, max_seq_len).cpu().int()
         timesteps = torch.IntTensor(batch_size, self._beam_width, max_seq_len).cpu().int()
         scores = torch.FloatTensor(batch_size, self._beam_width).cpu().float()
-        out_seq_len = torch.IntTensor(batch_size, self._beam_width).cpu().int()
+        out_seq_len = torch.zeros(batch_size, self._beam_width).cpu().int()
         if self._scorer:
             ctc_decode.paddle_beam_decode_lm(probs, seq_lens, self._labels, self._num_labels, self._beam_width,
                                              self._num_processes, self._cutoff_prob, self.cutoff_top_n, self._blank_id,
-                                             self._log_probs ,self._scorer, output, timesteps, scores, out_seq_len)
+                                             self._log_probs, self._scorer, output, timesteps, scores, out_seq_len)
         else:
-            ctc_decode.paddle_beam_decode(probs, seq_lens, self._labels, self._num_labels, self._beam_width, self._num_processes,
+            ctc_decode.paddle_beam_decode(probs, seq_lens, self._labels, self._num_labels, self._beam_width,
+                                          self._num_processes,
                                           self._cutoff_prob, self.cutoff_top_n, self._blank_id, self._log_probs,
                                           output, timesteps, scores, out_seq_len)
 
