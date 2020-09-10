@@ -127,7 +127,7 @@ void Scorer::reset_params(float alpha, float beta) {
 std::string Scorer::vec2str(const std::vector<int>& input) {
   std::string word;
   for (auto ind : input) {
-    if(ind == SPACE_ID_) word += "#";
+    if(ind == SPACE_ID_ && is_character_based_) word += "#";
     else word += char_list_[ind];
   }
   return word;
